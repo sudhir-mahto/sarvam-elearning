@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sarvam</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f5f6fa; }
+        .shell { max-width: 1440px; margin: 0 auto; padding: 12px; }
+        .topbar, .sidebar, .main-panel, .kpi-card { background: #fff; border: 1px solid #eceff5; border-radius: 0; box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05); }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            margin-bottom: 0;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 30px; }
+        .brand img { width: 64px; height: 40px; object-fit: contain; }
+        .role-badge {
+            background: #dff2ff;
+            color: #246d92;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+        .logout-btn {
+            background: #ffecee;
+            color: #bf4a58;
+            border-radius: 12px;
+            padding: 8px 16px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .layout {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            min-height: calc(100vh - 95px);
+        }
+        .sidebar {
+            border-top: 0;
+            padding: 18px 12px;
+        }
+        .side-logo {
+            border-bottom: 1px solid #eceff5;
+            margin-bottom: 14px;
+            padding: 0 14px 14px;
+        }
+        .side-logo img { width: 64px; height: 40px; object-fit: contain; }
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #111827;
+            text-decoration: none;
+            padding: 12px 14px;
+            font-size: 16px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            border-radius: 10px;
+        }
+        .menu-link:hover, .menu-link.active {
+            background: #f3f7ff;
+            color: #115fd1;
+        }
+        .main-panel {
+            border-top: 0;
+            border-left: 1px solid #eceff5;
+            padding: 18px 26px;
+        }
+        .main-panel h1 { font-size: 52px; font-weight: 700; margin-bottom: 12px; }
+        .main-panel p { font-size: 22px; margin-bottom: 18px; }
+        .kpi-card {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+        }
+        .kpi-label { color: #6b7280; font-weight: 600; font-size: 16px; }
+        .kpi-value { font-size: 36px; font-weight: 700; color: #111827; line-height: 1.2; }
+        .section-card { background: #fff; border: 1px solid #eceff5; border-radius: 12px; padding: 14px; margin-top: 14px; }
+        @media (max-width: 1200px) {
+            .layout { grid-template-columns: 1fr; }
+            .menu-link { font-size: 18px; }
+            .brand { font-size: 18px; }
+            .main-panel h1 { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <header class="topbar">
+        <div class="brand">
+            <img src="/images/sarvam-logo.png" alt="Sarvam Professional Education">
+            <span>Sarvam Professional Education</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="fw-semibold">Namaste, <span th:text="${displayName}">admin</span></span>
+            <span class="role-badge" th:text="${roleBadge}">ADMIN</span>
+            <a class="logout-btn" href="/logout"><i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="side-logo">
+                <img src="/images/sarvam-logo.png" alt="Sarvam">
+            </div>
+            <a href="/admin/dashboard?tab=overview" class="menu-link" th:classappend="${activeTab == 'overview'} ? ' active'"><i class="fa-solid fa-house"></i>Dashboard</a>
+            <a href="/admin/dashboard?tab=users" class="menu-link" th:classappend="${activeTab == 'users'} ? ' active'"><i class="fa-solid fa-users"></i>Manage Users</a>
+            <a href="/admin/dashboard?tab=courses" class="menu-link" th:classappend="${activeTab == 'courses'} ? ' active'"><i class="fa-solid fa-book"></i>Manage Courses</a>
+            <a href="/admin/dashboard?tab=payments" class="menu-link" th:classappend="${activeTab == 'payments'} ? ' active'"><i class="fa-solid fa-credit-card"></i>Verify Payments</a>
+            <a href="/admin/dashboard?tab=reports" class="menu-link" th:classappend="${activeTab == 'reports'} ? ' active'"><i class="fa-solid fa-chart-column"></i>Reports</a>
+            <a href="/admin/dashboard?tab=contacts" class="menu-link" th:classappend="${activeTab == 'contacts'} ? ' active'"><i class="fa-solid fa-envelope"></i>Contact Messages</a>
+        </aside>
+
+        <main class="main-panel">
+            <h1>Admin Dashboard</h1>
+            <p>Manage Users • Courses • Payments • Reports • Contacts</p>
+
+            <div class="row" th:if="${activeTab == 'overview'}">
+                <div class="col-md-6 col-xl-3">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Users</div>
+                        <div class="kpi-value" th:text="${totalUsers}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Courses</div>
+                        <div class="kpi-value" th:text="${totalCourses}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Payments</div>
+                        <div class="kpi-value" th:text="${totalPayments}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Contact Messages</div>
+                        <div class="kpi-value" th:text="${totalContacts}">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="users" class="section-card" th:if="${activeTab == 'users'}">
+                <h5 class="mb-3">Manage Users (Create / Update)</h5>
+                <form action="/admin/user/save" method="post" class="row g-2">
+                    <div class="col-md-1"><input class="form-control" name="id" placeholder="ID"></div>
+                    <div class="col-md-2"><input class="form-control" name="name" placeholder="Name" required></div>
+                    <div class="col-md-2"><input class="form-control" name="email" placeholder="Email" required></div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="role" required>
+                            <option value="STUDENT">STUDENT</option>
+                            <option value="TEACHER">TEACHER</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2"><input class="form-control" name="password" placeholder="Password (new/reset)"></div>
+                    <div class="col-md-1">
+                        <select class="form-select" name="active">
+                            <option value="true">Active</option>
+                            <option value="false">Blocked</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2"><button class="btn btn-primary w-100">Save User</button></div>
+                </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <tr th:each="u : ${users}">
+                            <td th:text="${u.id}"></td>
+                            <td th:text="${u.name}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.role}"></td>
+                            <td th:text="${u.active}"></td>
+                            <td>
+                                <form th:action="@{'/admin/user/delete/' + ${u.id}}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="courses" class="section-card" th:if="${activeTab == 'courses'}">
+                <h5 class="mb-3">Manage Courses</h5>
+                <table class="table table-sm">
+                    <thead><tr><th>ID</th><th>Title</th><th>Price</th><th>Instructor</th><th>Action</th></tr></thead>
+                    <tbody>
+                    <tr th:each="c : ${courses}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.title}"></td>
+                        <td th:text="${c.price}"></td>
+                        <td th:text="${c.instructor}"></td>
+                        <td>
+                            <form th:action="@{'/admin/course/delete/' + ${c.id}}" method="post">
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="payments" class="section-card" th:if="${activeTab == 'payments'}">
+                <h5 class="mb-3">Verify Payments</h5>
+                <table class="table table-sm">
+                    <thead><tr><th>Invoice</th><th>Student</th><th>Course</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody>
+                    <tr th:each="p : ${payments}">
+                        <td th:text="${p.invoiceNo}"></td>
+                        <td th:text="${p.studentId}"></td>
+                        <td th:text="${p.courseId}"></td>
+                        <td th:text="${p.amount}"></td>
+                        <td th:text="${p.status}"></td>
+                        <td>
+                            <form th:action="@{'/admin/payment/verify/' + ${p.id}}" method="post">
+                                <button class="btn btn-sm btn-success">Verify</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="reports" class="section-card" th:if="${activeTab == 'reports'}">
+                <h5 class="mb-3">Reports</h5>
+                <p class="mb-1">Total Users: <strong th:text="${totalUsers}">0</strong></p>
+                <p class="mb-1">Total Courses: <strong th:text="${totalCourses}">0</strong></p>
+                <p class="mb-1">Total Payments: <strong th:text="${totalPayments}">0</strong></p>
+                <p class="mb-0">Total Contact Messages: <strong th:text="${totalContacts}">0</strong></p>
+            </section>
+
+            <section id="contacts" class="section-card" th:if="${activeTab == 'contacts'}">
+                <h5 class="mb-3">Contact Messages</h5>
+                <table class="table table-sm">
+                    <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Reply</th><th>Action</th></tr></thead>
+                    <tbody>
+                    <tr th:each="c : ${contacts}">
+                        <td th:text="${c.name}"></td>
+                        <td th:text="${c.email}"></td>
+                        <td th:text="${c.message}"></td>
+                        <td th:text="${c.adminReply != null ? c.adminReply : 'Pending'}"></td>
+                        <td>
+                            <form th:action="@{'/admin/contact/reply/' + ${c.id}}" method="post" class="d-flex gap-1">
+                                <input class="form-control form-control-sm" name="adminReply" placeholder="Reply" required>
+                                <button class="btn btn-sm btn-primary">Send</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</div>
+</body>
+</html>

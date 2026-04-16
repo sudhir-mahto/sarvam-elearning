@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Sarvam</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f5f6fa; }
+        .shell { max-width: 1440px; margin: 0 auto; padding: 12px; }
+        .topbar, .sidebar, .main-panel, .card-box { background: #fff; border: 1px solid #eceff5; box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05); }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .brand img, .side-logo img { width: 64px; height: 40px; object-fit: contain; }
+        .role-badge { background: #dff2ff; color: #246d92; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+        .logout-btn { background: #ffecee; color: #bf4a58; border-radius: 12px; padding: 8px 16px; text-decoration: none; font-weight: 600; }
+        .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 95px); }
+        .sidebar { border-top: 0; padding-top: 16px; }
+        .side-logo { border-bottom: 1px solid #eceff5; margin-bottom: 14px; padding: 0 14px 14px; }
+        .menu-link { display: flex; align-items: center; gap: 12px; color: #111827; text-decoration: none; padding: 12px 22px; margin-bottom: 2px; }
+        .menu-link:hover, .menu-link.active { background: #f3f7ff; color: #115fd1; }
+        .main-panel { border-top: 0; border-left: 1px solid #eceff5; padding: 18px 26px; }
+        .card-box { border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .small-muted { color: #6b7280; font-size: 13px; }
+        @media (max-width: 1200px) { .layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <header class="topbar">
+        <div class="brand">
+            <img src="/images/sarvam-logo.png" alt="Sarvam Professional Education">
+            <span>Sarvam Professional Education</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="fw-semibold">Namaste, <span th:text="${displayName}">Teacher</span></span>
+            <span class="role-badge" th:text="${roleBadge}">TEACHER</span>
+            <a class="logout-btn" href="/logout"><i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="side-logo"><img src="/images/sarvam-logo.png" alt="Sarvam"></div>
+            <a href="/teacher/dashboard?tab=overview" class="menu-link" th:classappend="${activeTab == 'overview'} ? ' active'"><i class="fa-solid fa-house"></i>Dashboard</a>
+            <a href="/teacher/dashboard?tab=courses" class="menu-link" th:classappend="${activeTab == 'courses'} ? ' active'"><i class="fa-solid fa-book"></i>Manage Courses</a>
+            <a href="/teacher/dashboard?tab=lectures" class="menu-link" th:classappend="${activeTab == 'lectures'} ? ' active'"><i class="fa-solid fa-upload"></i>Upload Lectures</a>
+            <a href="/teacher/dashboard?tab=notes" class="menu-link" th:classappend="${activeTab == 'notes'} ? ' active'"><i class="fa-solid fa-file-arrow-up"></i>Upload Notes</a>
+            <a href="/teacher/dashboard?tab=quizzes" class="menu-link" th:classappend="${activeTab == 'quizzes'} ? ' active'"><i class="fa-solid fa-circle-question"></i>Create Quizzes</a>
+            <a href="/teacher/dashboard?tab=students" class="menu-link" th:classappend="${activeTab == 'students'} ? ' active'"><i class="fa-solid fa-users"></i>My Students</a>
+        </aside>
+
+        <main class="main-panel">
+            <h1 class="mb-2">Teacher Dashboard</h1>
+            <p class="mb-4">All features ready (Add courses, upload lectures, create quizzes, view students)</p>
+
+            <section class="card-box" th:if="${activeTab == 'overview'}">
+                <h5>Overview</h5>
+                <p class="mb-2">Use the left menu to manage courses, lectures, notes, quizzes, and students.</p>
+                <div class="row">
+                    <div class="col-md-3"><div class="border rounded p-3">Courses: <strong th:text="${#lists.size(courses)}">0</strong></div></div>
+                    <div class="col-md-3"><div class="border rounded p-3">Lectures: <strong th:text="${#lists.size(lectures)}">0</strong></div></div>
+                    <div class="col-md-3"><div class="border rounded p-3">Notes: <strong th:text="${#lists.size(notes)}">0</strong></div></div>
+                    <div class="col-md-3"><div class="border rounded p-3">Students: <strong th:text="${#lists.size(students)}">0</strong></div></div>
+                </div>
+            </section>
+
+            <section id="courses" class="card-box" th:if="${activeTab == 'courses'}">
+                <h5 class="mb-3">Add / Update Course</h5>
+                <form method="post" action="/teacher/course/save" class="row g-2">
+                    <div class="col-md-2"><input class="form-control" name="id" placeholder="ID (optional)"></div>
+                    <div class="col-md-3"><input class="form-control" name="title" placeholder="Course Title" required></div>
+                    <div class="col-md-2"><input class="form-control" name="price" type="number" placeholder="Price" required></div>
+                    <div class="col-md-3"><input class="form-control" name="instructor" placeholder="Instructor" required></div>
+                    <div class="col-md-2"><button class="btn btn-primary w-100">Save Course</button></div>
+                </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Title</th><th>Price</th><th>Instructor</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <tr th:each="c : ${courses}">
+                            <td th:text="${c.id}"></td><td th:text="${c.title}"></td><td th:text="${c.price}"></td><td th:text="${c.instructor}"></td>
+                            <td>
+                                <form th:action="@{'/teacher/course/delete/' + ${c.id}}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="lectures" class="card-box" th:if="${activeTab == 'lectures'}">
+                <h5 class="mb-3">Add / Update Lecture</h5>
+                <form method="post" action="/teacher/lecture/save" class="row g-2">
+                    <div class="col-md-2"><input class="form-control" name="id" placeholder="ID (optional)"></div>
+                    <div class="col-md-2"><input class="form-control" name="courseId" placeholder="Course ID" required></div>
+                    <div class="col-md-3"><input class="form-control" name="title" placeholder="Lecture Title" required></div>
+                    <div class="col-md-2"><input class="form-control" name="videoUrl" placeholder="YouTube URL"></div>
+                    <div class="col-md-2"><input class="form-control" name="meetingUrl" placeholder="Meet/Zoom URL"></div>
+                    <div class="col-md-1"><button class="btn btn-primary w-100">Save</button></div>
+                </form>
+                <div class="small-muted mt-2">For edit, provide existing Lecture ID.</div>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Course</th><th>Title</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <tr th:each="l : ${lectures}">
+                            <td th:text="${l.id}"></td><td th:text="${l.courseId}"></td><td th:text="${l.title}"></td>
+                            <td>
+                                <form th:action="@{'/teacher/lecture/delete/' + ${l.id}}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="notes" class="card-box" th:if="${activeTab == 'notes'}">
+                <h5 class="mb-3">Add / Update Note</h5>
+                <form method="post" action="/teacher/note/save" class="row g-2">
+                    <div class="col-md-2"><input class="form-control" name="id" placeholder="ID (optional)"></div>
+                    <div class="col-md-2"><input class="form-control" name="courseId" placeholder="Course ID" required></div>
+                    <div class="col-md-4"><input class="form-control" name="title" placeholder="Note Title" required></div>
+                    <div class="col-md-3"><input class="form-control" name="fileUrl" placeholder="File URL" required></div>
+                    <div class="col-md-1"><button class="btn btn-primary w-100">Save</button></div>
+                </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Course</th><th>Title</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <tr th:each="n : ${notes}">
+                            <td th:text="${n.id}"></td><td th:text="${n.courseId}"></td><td th:text="${n.title}"></td>
+                            <td>
+                                <form th:action="@{'/teacher/note/delete/' + ${n.id}}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="quizzes" class="card-box" th:if="${activeTab == 'quizzes'}">
+                <h5 class="mb-3">Add / Update Quiz Question</h5>
+                <form method="post" action="/teacher/quiz/save" class="row g-2">
+                    <div class="col-md-2"><input class="form-control" name="id" placeholder="ID (optional)"></div>
+                    <div class="col-md-2"><input class="form-control" name="courseId" placeholder="Course ID" required></div>
+                    <div class="col-md-8"><input class="form-control" name="question" placeholder="Question" required></div>
+                    <div class="col-md-3"><input class="form-control" name="optionA" placeholder="Option A" required></div>
+                    <div class="col-md-3"><input class="form-control" name="optionB" placeholder="Option B" required></div>
+                    <div class="col-md-3"><input class="form-control" name="optionC" placeholder="Option C" required></div>
+                    <div class="col-md-3"><input class="form-control" name="optionD" placeholder="Option D" required></div>
+                    <div class="col-md-10"><input class="form-control" name="correctOption" placeholder="Correct Option (A/B/C/D)" required></div>
+                    <div class="col-md-2"><button class="btn btn-primary w-100">Save Quiz</button></div>
+                </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm">
+                        <thead><tr><th>ID</th><th>Course</th><th>Question</th><th>Action</th></tr></thead>
+                        <tbody>
+                        <tr th:each="q : ${quizzes}">
+                            <td th:text="${q.id}"></td><td th:text="${q.courseId}"></td><td th:text="${q.question}"></td>
+                            <td>
+                                <form th:action="@{'/teacher/quiz/delete/' + ${q.id}}" method="post">
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="students" class="card-box" th:if="${activeTab == 'students'}">
+                <h5 class="mb-3">Enrolled Students</h5>
+                <table class="table table-sm">
+                    <thead><tr><th>Enrollment ID</th><th>Student ID</th><th>Course ID</th><th>Enrolled At</th></tr></thead>
+                    <tbody>
+                    <tr th:each="s : ${students}">
+                        <td th:text="${s.id}"></td>
+                        <td th:text="${s.studentId}"></td>
+                        <td th:text="${s.courseId}"></td>
+                        <td th:text="${s.enrolledAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Sarvam</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f6f7fb; }
+        .topbar, .sidebar, .content-card, .stat-card, .course-card { background: #fff; border-radius: 16px; box-shadow: 0 8px 24px rgba(17, 24, 39, 0.06); }
+        .dashboard-wrap { max-width: 1400px; margin: 0 auto; padding: 14px; }
+        .topbar {
+            border: 1px solid #eceff5;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            object-fit: contain;
+            border: 1px solid #eef2f7;
+            padding: 6px;
+            background: #fff;
+        }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            gap: 14px;
+        }
+        .sidebar {
+            border: 1px solid #eceff5;
+            padding: 18px 12px;
+            min-height: calc(100vh - 130px);
+        }
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1f2937;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .menu-link:hover, .menu-link.active {
+            background: #f0f7ff;
+            color: #1161d9;
+        }
+        .content-card {
+            border: 1px solid #eceff5;
+            padding: 24px;
+        }
+        .page-title {
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+        .stat-card {
+            border: 1px solid #eef2f7;
+            padding: 18px 22px;
+            min-height: 130px;
+        }
+        .stat-label { color: #374151; font-weight: 600; margin-bottom: 8px; }
+        .stat-value { font-size: 52px; font-weight: 700; line-height: 1; }
+        .stat-blue { color: #0c63f3; }
+        .stat-green { color: #009966; }
+        .stat-orange { color: #cf7d00; font-size: 42px; }
+        .course-card {
+            border: 1px solid #eef2f7;
+            padding: 18px;
+            height: 100%;
+        }
+        .course-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: #eef6ff;
+            color: #1e67d2;
+        }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+        .price-tag { font-size: 38px; font-weight: 700; line-height: 1; }
+        .btn-buy {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 24px;
+            background: linear-gradient(90deg, #00c389, #00a76b);
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .role-badge {
+            background: #e8f4ff;
+            color: #2f74a0;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+        .btn-logout {
+            border-radius: 12px;
+            background: #ffecee;
+            color: #c24456;
+            font-weight: 600;
+            border: 0;
+            padding: 10px 18px;
+            text-decoration: none;
+        }
+        @media (max-width: 992px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .sidebar { min-height: auto; }
+            .page-title { font-size: 34px; }
+            .stat-value { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-wrap">
+    <header class="topbar">
+        <img src="/images/sarvam-logo.png" alt="Sarvam" class="logo">
+        <div class="d-flex align-items-center gap-3">
+            <span class="fw-semibold">Namaste, <span th:text="${displayName}">Student</span></span>
+            <span class="role-badge" th:text="${roleBadge}">STUDENT</span>
+            <a class="btn-logout" href="/logout"><i class="fa-solid fa-right-from-bracket me-1"></i>Logout</a>
+        </div>
+    </header>
+
+    <div class="main-grid">
+        <aside class="sidebar">
+            <a href="/student/dashboard?tab=overview" class="menu-link" th:classappend="${activeTab == 'overview'} ? ' active'"><i class="fa-solid fa-house"></i>Dashboard</a>
+            <a href="/student/dashboard?tab=buy" class="menu-link" th:classappend="${activeTab == 'buy'} ? ' active'"><i class="fa-solid fa-cart-shopping"></i>Buy Courses</a>
+            <a href="/student/dashboard?tab=courses" class="menu-link" th:classappend="${activeTab == 'courses'} ? ' active'"><i class="fa-solid fa-book"></i>My Courses</a>
+            <a href="/student/dashboard?tab=payments" class="menu-link" th:classappend="${activeTab == 'payments'} ? ' active'"><i class="fa-solid fa-receipt"></i>Payments</a>
+            <a href="/student/dashboard?tab=support" class="menu-link" th:classappend="${activeTab == 'support'} ? ' active'"><i class="fa-solid fa-headset"></i>Support</a>
+        </aside>
+
+        <main class="content-card">
+            <h1 class="page-title">Namaste, <span th:text="${displayName}">Student</span> <span class="fs-2">👋</span></h1>
+
+            <div class="row g-3 mb-4" th:if="${activeTab == 'overview'}">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Enrolled Courses</div>
+                        <div class="stat-value stat-blue" th:text="${enrolledCount}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Hours Learned</div>
+                        <div class="stat-value stat-green" th:text="${hoursLearned}">24</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Current Streak</div>
+                        <div class="stat-value stat-orange"><span class="me-2">🔥</span><span th:text="${currentStreak}">7</span> days</div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${activeTab == 'buy'}">
+            <h2 id="buy-courses" class="fw-bold mb-3">Available Courses</h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4" th:if="${#lists.isEmpty(courses)}">
+                    <div class="course-card">
+                        <div class="text-muted">No course available yet.</div>
+                    </div>
+                </div>
+                <div class="col-md-4" th:each="course : ${courses}">
+                    <div class="course-card">
+                        <div class="course-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                        <h5 class="fw-bold mb-1" th:text="${course.title}">Web Development 101</h5>
+                        <p class="text-muted mb-0">by <span th:text="${course.instructor}">Faculty</span></p>
+                        <div class="price-row">
+                            <div class="price-tag">₹<span th:text="${course.price}">999</span></div>
+                            <form action="/student/buy-course" method="post" class="d-flex align-items-center gap-2">
+                                <input type="hidden" name="courseId" th:value="${course.id}">
+                                <input type="text" name="upiRef" class="form-control form-control-sm" placeholder="UPI Ref" required style="max-width: 120px;">
+                                <button class="btn-buy" type="submit">Buy Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div th:if="${activeTab == 'courses'}">
+            <h2 id="my-courses" class="fw-bold mb-3">My Enrollments</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered bg-white">
+                    <thead><tr><th>Enrollment ID</th><th>Course ID</th><th>Date</th></tr></thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(myEnrollments)}"><td colspan="3" class="text-muted">No enrolled courses yet.</td></tr>
+                    <tr th:each="e : ${myEnrollments}">
+                        <td th:text="${e.id}"></td>
+                        <td th:text="${e.courseId}"></td>
+                        <td th:text="${e.enrolledAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+            <div th:if="${activeTab == 'payments'}">
+            <h2 id="payments" class="fw-bold mb-3">Payment History</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered bg-white">
+                    <thead><tr><th>Invoice</th><th>Course</th><th>Amount</th><th>Status</th><th>Paid At</th></tr></thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(myPayments)}"><td colspan="5" class="text-muted">No payments yet.</td></tr>
+                    <tr th:each="p : ${myPayments}">
+                        <td th:text="${p.invoiceNo}"></td>
+                        <td th:text="${p.courseId}"></td>
+                        <td th:text="${p.amount}"></td>
+                        <td th:text="${p.status}"></td>
+                        <td th:text="${p.paidAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+            <div th:if="${activeTab == 'support'}">
+            <h2 id="contact-support" class="fw-bold mb-3">Contact Support</h2>
+            <form action="/student/contact" method="post" class="row g-2 mb-3">
+                <div class="col-md-3"><input class="form-control" name="name" placeholder="Name"></div>
+                <div class="col-md-3"><input class="form-control" name="email" placeholder="Email"></div>
+                <div class="col-md-2"><input class="form-control" name="phone" placeholder="Phone"></div>
+                <div class="col-md-3"><input class="form-control" name="message" placeholder="Your message" required></div>
+                <div class="col-md-1"><button class="btn btn-primary w-100">Send</button></div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-bordered bg-white">
+                    <thead><tr><th>Name</th><th>Message</th><th>Admin Reply</th></tr></thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(myContacts)}"><td colspan="3" class="text-muted">No support tickets yet.</td></tr>
+                    <tr th:each="c : ${myContacts}">
+                        <td th:text="${c.name}"></td>
+                        <td th:text="${c.message}"></td>
+                        <td th:text="${c.adminReply != null ? c.adminReply : 'Pending'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
