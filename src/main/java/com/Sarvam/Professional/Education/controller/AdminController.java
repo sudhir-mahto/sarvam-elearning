@@ -9,8 +9,10 @@ import com.Sarvam.Professional.Education.repository.ContactRepository;
 import com.Sarvam.Professional.Education.repository.CourseRepository;
 import com.Sarvam.Professional.Education.repository.PaymentRepository;
 import com.Sarvam.Professional.Education.repository.UserRepository;
+
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,10 +25,10 @@ public class AdminController {
     private final ContactRepository contactRepository;
 
     public AdminController(
-        UserRepository userRepository,
-        CourseRepository courseRepository,
-        PaymentRepository paymentRepository,
-        ContactRepository contactRepository
+            UserRepository userRepository,
+            CourseRepository courseRepository,
+            PaymentRepository paymentRepository,
+            ContactRepository contactRepository
     ) {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
@@ -73,10 +75,10 @@ public class AdminController {
     @GetMapping("/reports")
     public Map<String, Long> reports() {
         return Map.of(
-            "totalUsers", userRepository.count(),
-            "totalCourses", courseRepository.count(),
-            "totalPayments", paymentRepository.count(),
-            "totalContacts", contactRepository.count()
+                "totalUsers", userRepository.count(),
+                "totalCourses", courseRepository.count(),
+                "totalPayments", paymentRepository.count(),
+                "totalContacts", contactRepository.count()
         );
     }
 

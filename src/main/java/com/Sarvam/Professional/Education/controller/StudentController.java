@@ -4,9 +4,11 @@ import com.Sarvam.Professional.Education.dto.BuyCourseRequest;
 import com.Sarvam.Professional.Education.dto.QuizSubmitRequest;
 import com.Sarvam.Professional.Education.model.*;
 import com.Sarvam.Professional.Education.repository.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,15 +26,15 @@ public class StudentController {
     private final ContactRepository contactRepository;
 
     public StudentController(
-        UserRepository userRepository,
-        CourseRepository courseRepository,
-        EnrollmentRepository enrollmentRepository,
-        PaymentRepository paymentRepository,
-        LectureRepository lectureRepository,
-        NoteRepository noteRepository,
-        QuizRepository quizRepository,
-        ResultRepository resultRepository,
-        ContactRepository contactRepository
+            UserRepository userRepository,
+            CourseRepository courseRepository,
+            EnrollmentRepository enrollmentRepository,
+            PaymentRepository paymentRepository,
+            LectureRepository lectureRepository,
+            NoteRepository noteRepository,
+            QuizRepository quizRepository,
+            ResultRepository resultRepository,
+            ContactRepository contactRepository
     ) {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
@@ -62,7 +64,7 @@ public class StudentController {
     @PostMapping("/buy-course")
     public Payment buyCourse(@RequestBody BuyCourseRequest request) {
         Course course = courseRepository.findById(request.courseId)
-            .orElseThrow(() -> new RuntimeException("Course not found"));
+                .orElseThrow(() -> new RuntimeException("Course not found"));
         if (enrollmentRepository.existsByStudentIdAndCourseId(request.studentId, request.courseId)) {
             throw new RuntimeException("Already enrolled in this course");
         }

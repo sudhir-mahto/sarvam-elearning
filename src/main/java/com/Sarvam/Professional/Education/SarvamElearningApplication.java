@@ -12,6 +12,5 @@ public class SarvamElearningApplication {
         System.out.println("=====================================");
         System.out.println("✅ Sarvam Professional Education Started Successfully!");
         System.out.println("🌐 Open Browser → http://localhost:8080");
-        System.out.println("=====================================");
     }
 }

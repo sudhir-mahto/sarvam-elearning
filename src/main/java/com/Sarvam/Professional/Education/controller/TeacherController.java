@@ -2,7 +2,9 @@ package com.Sarvam.Professional.Education.controller;
 
 import com.Sarvam.Professional.Education.model.*;
 import com.Sarvam.Professional.Education.repository.*;
+
 import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,12 +19,12 @@ public class TeacherController {
     private final ResultRepository resultRepository;
 
     public TeacherController(
-        CourseRepository courseRepository,
-        LectureRepository lectureRepository,
-        NoteRepository noteRepository,
-        QuizRepository quizRepository,
-        EnrollmentRepository enrollmentRepository,
-        ResultRepository resultRepository
+            CourseRepository courseRepository,
+            LectureRepository lectureRepository,
+            NoteRepository noteRepository,
+            QuizRepository quizRepository,
+            EnrollmentRepository enrollmentRepository,
+            ResultRepository resultRepository
     ) {
         this.courseRepository = courseRepository;
         this.lectureRepository = lectureRepository;

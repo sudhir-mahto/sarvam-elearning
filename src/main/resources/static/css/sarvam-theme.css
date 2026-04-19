@@ -1,0 +1,822 @@
+/* Sarvam Professional Education — unified UI theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --color-bg: #eef2f7;
+    --color-bg-elevated: #f8fafc;
+    --color-surface: #ffffff;
+    --color-primary: #2563eb;
+    --color-primary-soft: #eff6ff;
+    --color-primary-dark: #1d4ed8;
+    --color-accent: #0d9488;
+    --color-text: #0f172a;
+    --color-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-success: #059669;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 10px 40px -10px rgba(15, 23, 42, 0.12);
+    --radius: 12px;
+    --radius-lg: 16px;
+    --space-page: clamp(16px, 3vw, 24px);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.sarvam-app {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--color-bg);
+}
+
+/* ——— Auth pages (login, signup, change password, landing) ——— */
+.sarvam-auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-page);
+    background: radial-gradient(ellipse 120% 80% at 50% -20%, rgba(37, 99, 235, 0.12), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, rgba(13, 148, 136, 0.08), transparent 45%),
+    var(--color-bg);
+}
+
+.sarvam-auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    padding: 2rem 2.25rem;
+}
+
+.sarvam-auth-card h1,
+.sarvam-auth-card h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.sarvam-auth-card label,
+.sarvam-auth-card .form-label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin-bottom: 0.35rem;
+}
+
+.sarvam-auth-card .form-control,
+.sarvam-auth-card .form-select {
+    border-radius: var(--radius);
+    border-color: var(--color-border);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9375rem;
+}
+
+.sarvam-auth-card .form-control:focus,
+.sarvam-auth-card .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Home page (marketing landing) */
+.sarvam-home-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: radial-gradient(ellipse 90% 50% at 50% -15%, rgba(37, 99, 235, 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, rgba(13, 148, 136, 0.08), transparent 50%),
+    var(--color-bg);
+}
+
+.sarvam-home-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.sarvam-home-nav-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0.75rem var(--space-page);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+}
+
+/* Brand left; Login + Sign Up right */
+.sarvam-home-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
+.sarvam-home-brand-text {
+    white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+    .sarvam-home-brand-text {
+        white-space: normal;
+        max-width: 12rem;
+        line-height: 1.25;
+    }
+}
+
+.sarvam-home-logo-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    overflow: hidden;
+}
+
+.sarvam-home-logo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.sarvam-home-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.sarvam-home-nav-links .btn-sarvam-primary,
+.sarvam-home-nav-links .btn-sarvam-secondary {
+    padding: 0.5rem 1.1rem;
+    font-size: 0.875rem;
+    border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+    .sarvam-home-nav-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sarvam-home-nav-links {
+        width: 100%;
+        margin-left: 0;
+        justify-content: flex-end;
+    }
+}
+
+.sarvam-home-main {
+    flex: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2rem var(--space-page) 3rem;
+    width: 100%;
+}
+
+.sarvam-home-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 2.5rem;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 900px) {
+    .sarvam-home-hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sarvam-home-hero-copy h1 {
+    font-size: clamp(1.85rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--color-text);
+    margin: 0 0 1rem;
+}
+
+.sarvam-home-hero-copy .lead {
+    font-size: 1.0625rem;
+    color: var(--color-muted);
+    margin-bottom: 1.25rem;
+    max-width: 36rem;
+}
+
+.sarvam-home-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+.sarvam-home-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+}
+
+.sarvam-home-hero-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.sarvam-home-hero-card h2 {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    margin: 0 0 1rem;
+}
+
+.sarvam-home-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+}
+
+.sarvam-home-stat:last-child {
+    border-bottom: 0;
+}
+
+.sarvam-home-stat strong {
+    color: var(--color-primary);
+    font-size: 1.125rem;
+}
+
+.sarvam-home-section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.25rem;
+    color: var(--color-text);
+}
+
+.sarvam-home-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .sarvam-home-features {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sarvam-home-feature {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.35rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.sarvam-home-feature:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(37, 99, 235, 0.25);
+}
+
+.sarvam-home-feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    margin-bottom: 0.85rem;
+}
+
+.sarvam-home-feature h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+    color: var(--color-text);
+}
+
+.sarvam-home-feature p {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.sarvam-home-about {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.sarvam-home-about p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+}
+
+.sarvam-home-about p + p {
+    margin-top: 0.75rem;
+}
+
+.sarvam-home-footer {
+    margin-top: auto;
+    padding: 1.25rem var(--space-page);
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    border-top: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Login: forgot password hint after failed attempt */
+.sarvam-forgot-callout {
+    background: var(--color-primary-soft);
+    border: 1px solid rgba(37, 99, 235, 0.22);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.sarvam-forgot-callout strong {
+    display: block;
+    font-size: 0.9375rem;
+    margin-bottom: 0.35rem;
+    color: var(--color-text);
+}
+
+.sarvam-forgot-callout p {
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    margin: 0 0 0.75rem;
+    line-height: 1.45;
+}
+
+/* Buttons */
+.btn-sarvam-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.35rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border-radius: var(--radius);
+    border: none;
+    background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: #fff !important;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-sarvam-primary:hover {
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.btn-sarvam-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.35rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text) !important;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.btn-sarvam-secondary:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark) !important;
+}
+
+.btn-sarvam-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-muted) !important;
+    text-decoration: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-sarvam-ghost:hover {
+    color: var(--color-text) !important;
+    border-color: var(--color-muted);
+}
+
+.btn-sarvam-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 14px;
+}
+
+/* ——— Dashboard shell (student, teacher, admin) ——— */
+.sarvam-shell {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--space-page);
+    min-height: 100vh;
+}
+
+.sarvam-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+.sarvam-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.sarvam-brand img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    padding: 4px;
+    background: #fff;
+}
+
+.sarvam-topbar-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+}
+
+.sarvam-greet {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.sarvam-badge-role {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+}
+
+.sarvam-layout {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    min-height: calc(100vh - 120px);
+}
+
+.sarvam-sidebar {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 0.75rem;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: var(--space-page);
+}
+
+.sarvam-sidebar-logo {
+    padding: 0 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.sarvam-sidebar-logo img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.sarvam-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 0.25rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sarvam-nav-link i {
+    width: 1.25rem;
+    text-align: center;
+    opacity: 0.85;
+    font-size: 0.95rem;
+}
+
+.sarvam-nav-link:hover {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+}
+
+.sarvam-nav-link.active {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
+    font-weight: 600;
+}
+
+.sarvam-main {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem 2rem;
+    box-shadow: var(--shadow-sm);
+    min-height: 420px;
+}
+
+.sarvam-page-title {
+    font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+    color: var(--color-text);
+}
+
+.sarvam-page-lead {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    margin: 0 0 1.5rem;
+}
+
+.sarvam-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--color-text);
+}
+
+/* KPI / stat cards */
+.sarvam-kpi {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.15rem 1.25rem;
+    height: 100%;
+    transition: box-shadow 0.15s ease;
+}
+
+.sarvam-kpi:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.sarvam-kpi-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+}
+
+.sarvam-kpi-value {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-primary);
+}
+
+.sarvam-kpi-value.accent-teal {
+    color: var(--color-accent);
+}
+
+.sarvam-kpi-value.accent-amber {
+    color: #d97706;
+}
+
+/* Cards & tables */
+.sarvam-panel {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.sarvam-table-wrap {
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.sarvam-table-wrap .table {
+    margin-bottom: 0;
+    font-size: 0.875rem;
+}
+
+.sarvam-table-wrap .table thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    font-weight: 600;
+    background: var(--color-bg-elevated);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.65rem 0.85rem;
+}
+
+.sarvam-table-wrap .table td {
+    padding: 0.65rem 0.85rem;
+    vertical-align: middle;
+}
+
+/* Course cards (student buy) */
+.sarvam-course-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.sarvam-course-card:hover {
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: var(--shadow-md);
+}
+
+.sarvam-course-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+}
+
+.sarvam-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.btn-sarvam-buy {
+    border: none;
+    border-radius: 999px;
+    padding: 0.5rem 1.15rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* Student course (lectures) page */
+.sarvam-narrow {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: var(--space-page);
+}
+
+.sarvam-content-block {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 991px) {
+    .sarvam-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sarvam-sidebar {
+        position: static;
+    }
+}
+
+/* Align Bootstrap primary with theme */
+body.sarvam-app .btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary-dark);
+    font-weight: 600;
+    border-radius: var(--radius);
+}
+
+body.sarvam-app .btn-primary:hover,
+body.sarvam-app .btn-primary:focus {
+    background-color: #1d4ed8;
+    border-color: #1e40af;
+}
+
+body.sarvam-app .btn-outline-danger {
+    border-radius: var(--radius);
+    font-weight: 500;
+}
+
+body.sarvam-app .btn-success {
+    border-radius: var(--radius);
+    font-weight: 600;
+}

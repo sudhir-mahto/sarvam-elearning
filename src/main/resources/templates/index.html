@@ -1,24 +1,88 @@
 <!DOCTYPE html>
-<html lang="hi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarvam Professional Education</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="/css/sarvam-theme.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <div class="text-center">
-        <img src="/images/sarvam-logo.png" alt="Sarvam" class="img-fluid mb-4" style="height: 180px;">
-        <h1 class="display-4 fw-bold">Sarvam Professional Education</h1>
-<!--        <p class="lead text-muted">BCA Final Year E-Learning Management System</p>-->
-
-        <div class="mt-5">
-            <a href="/login" class="btn btn-primary btn-lg px-5 me-3">Login</a>
-            <a href="/signup" class="btn btn-outline-primary btn-lg px-5">Sign Up</a>
-        </div>
+<body class="sarvam-app sarvam-home-page">
+<header class="sarvam-home-nav">
+    <div class="sarvam-home-nav-inner">
+        <a class="sarvam-home-brand" href="/">
+                <span class="sarvam-home-logo-wrap">
+                    <img alt="" src="/images/sarvam-logo.png">
+                </span>
+            <span class="sarvam-home-brand-text">Sarvam Professional Education</span>
+        </a>
+        <nav aria-label="Account" class="sarvam-home-nav-links">
+            <a class="btn-sarvam-secondary" href="/login">Login</a>
+            <a class="btn-sarvam-primary" href="/signup">Sign Up</a>
+        </nav>
     </div>
-</div>
+</header>
+
+<main class="sarvam-home-main">
+    <section class="sarvam-home-hero">
+        <div class="sarvam-home-hero-copy">
+            <h1>Learn on your schedule. Grow with guided courses.</h1>
+            <p class="lead">A single place for video lectures, live classes, notes, quizzes, and secure payments—built
+                for students, teachers, and administrators.</p>
+            <div class="sarvam-home-badges">
+                <span class="sarvam-home-badge">Courses &amp; enrollments</span>
+                <span class="sarvam-home-badge">UPI payments &amp; invoices</span>
+                <span class="sarvam-home-badge">Role-based dashboards</span>
+            </div>
+        </div>
+        <aside aria-labelledby="at-a-glance" class="sarvam-home-hero-card">
+            <h2 id="at-a-glance">At a glance</h2>
+            <div class="sarvam-home-stat">
+                <span>Student experience</span>
+                <strong>Browse → Pay → Learn</strong>
+            </div>
+            <div class="sarvam-home-stat">
+                <span>Teachers</span>
+                <strong>Content &amp; quizzes</strong>
+            </div>
+            <div class="sarvam-home-stat">
+                <span>Admins</span>
+                <strong>Users &amp; verification</strong>
+            </div>
+        </aside>
+    </section>
+
+    <h2 class="sarvam-home-section-title">What you can do here</h2>
+    <section class="sarvam-home-features">
+        <article class="sarvam-home-feature">
+            <div class="sarvam-home-feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h3>For students</h3>
+            <p>Enroll in courses, pay with UPI, watch lectures and join live sessions, download notes, and track
+                payments.</p>
+        </article>
+        <article class="sarvam-home-feature">
+            <div class="sarvam-home-feature-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+            <h3>For teachers</h3>
+            <p>Publish courses, upload lectures with video or meeting links, share materials, and build quizzes.</p>
+        </article>
+        <article class="sarvam-home-feature">
+            <div class="sarvam-home-feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>For admins</h3>
+            <p>Manage accounts, oversee the catalog, verify payments, and respond to support messages.</p>
+        </article>
+    </section>
+
+    <section class="sarvam-home-about">
+        <p><strong class="text-dark">Sarvam Professional Education</strong> connects a Spring Boot backend with MySQL so
+            your data stays consistent—users, courses, enrollments, payments, and messages all live in one system.</p>
+        <p>Use <strong class="text-dark">Login</strong> if you already have an account, or <strong class="text-dark">Sign
+            Up</strong> to register as a student, teacher, or admin (as allowed by your institution).</p>
+    </section>
+</main>
+
+<footer class="sarvam-home-footer">
+    Sarvam Professional Education · E-learning platform
+</footer>
 </body>
 </html>

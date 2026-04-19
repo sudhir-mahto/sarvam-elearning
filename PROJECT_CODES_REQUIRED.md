@@ -26,8 +26,7 @@ export async function apiPost(path, body) {
 ## 2) Application Start (Home Screen)
 
 - Home endpoint: `GET /`
-- Returns startup options: Login, Sign Up, Change Password, Exit App
-- Exit endpoint: `GET /exit`
+- Returns startup options: Login, Sign Up, Change Password
 
 ## 3) User Authentication
 
