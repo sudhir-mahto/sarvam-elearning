@@ -17,8 +17,15 @@ import com.Sarvam.Professional.Education.repository.NoteRepository;
 import com.Sarvam.Professional.Education.repository.PaymentRepository;
 import com.Sarvam.Professional.Education.repository.QuizRepository;
 import com.Sarvam.Professional.Education.repository.UserRepository;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -64,9 +71,55 @@ public class HomeController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping("/home")
     public String home() {
-        return "index";           // yeh templates/index.html hoga
+        return "index";
+    }
+
+    /**
+     * Enrolled students: watch lectures (YouTube embed or link) and download notes.
+     */
+    @GetMapping("/student/course/{courseId}")
+    public String studentCourse(@PathVariable Long courseId, Authentication authentication, Model model) {
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+        if (!enrollmentRepository.existsByStudentIdAndCourseId(user.getId(), courseId)) {
+            return "redirect:/student/dashboard?tab=courses";
+        }
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        List<Lecture> lectures = lectureRepository.findByCourseId(courseId);
+        List<Note> notes = noteRepository.findByCourseId(courseId);
+
+        List<Map<String, Object>> lectureRows = new ArrayList<>();
+        for (Lecture l : lectures) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("title", l.getTitle());
+            row.put("videoUrl", l.getVideoUrl());
+            row.put("meetingUrl", l.getMeetingUrl());
+            row.put("youtubeEmbedId", extractYoutubeEmbedId(l.getVideoUrl()));
+            lectureRows.add(row);
+        }
+
+        model.addAttribute("course", course);
+        model.addAttribute("lectureRows", lectureRows);
+        model.addAttribute("notes", notes);
+        model.addAttribute("displayName", user.getName());
+        return "student-course";
+    }
+
+    private static String extractYoutubeEmbedId(String url) {
+        if (url == null || url.isBlank()) {
+            return null;
+        }
+        Matcher m = Pattern.compile("(?:youtube\\.com/watch\\?v=|youtu\\.be/|youtube\\.com/embed/)([\\w-]{11})")
+                .matcher(url.trim());
+        return m.find() ? m.group(1) : null;
     }
 
     @GetMapping("/dashboard")
@@ -117,6 +170,11 @@ public class HomeController {
         }
 
         int hoursLearned = enrolledCount == 0 ? 24 : enrolledCount * 12;
+        Map<Long, String> courseTitles = new HashMap<>();
+        for (Course c : courses) {
+            courseTitles.put(c.getId(), c.getTitle());
+        }
+        model.addAttribute("courseTitles", courseTitles);
         model.addAttribute("displayName", displayName);
         model.addAttribute("roleBadge", roleBadge);
         model.addAttribute("studentId", studentId);
@@ -158,7 +216,7 @@ public class HomeController {
         enrollment.setCourseId(courseId);
         enrollment.setEnrolledAt(LocalDateTime.now());
         enrollmentRepository.save(enrollment);
-        return "redirect:/student/dashboard";
+        return "redirect:/student/dashboard?tab=courses";
     }
 
     @PostMapping("/student/contact")
@@ -174,7 +232,7 @@ public class HomeController {
         }
         contact.setCreatedAt(LocalDateTime.now());
         contactRepository.save(contact);
-        return "redirect:/student/dashboard";
+        return "redirect:/student/dashboard?tab=support";
     }
 
     @GetMapping("/teacher/dashboard")
