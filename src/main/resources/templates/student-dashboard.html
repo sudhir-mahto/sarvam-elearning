@@ -127,8 +127,9 @@
                                 <span class="sarvam-price">₹<span th:text="${course.price}">0</span></span>
                                 <form action="/student/buy-course" method="post"
                                       class="d-flex align-items-center gap-2 flex-wrap">
-                                    <input type="hidden" name="courseId" th:value="${course.id}">
+                                    <input type="hidden" name="courseId" th:value="${course.courseId}">
                                     <input type="text" name="upiRef" class="form-control form-control-sm"
+                                           aria-label="UPI reference number"
                                            placeholder="UPI ref" required style="max-width: 130px;">
                                     <button class="btn-sarvam-buy" type="submit">Buy</button>
                                 </form>
@@ -156,11 +157,11 @@
                             <td colspan="4" class="text-muted py-4 text-center">No enrollments yet.</td>
                         </tr>
                         <tr th:each="e : ${myEnrollments}">
-                            <td th:text="${e.id}"></td>
+                            <td th:text="${e.enrollmentId}"></td>
                             <td th:text="${courseTitles.get(e.courseId) != null ? courseTitles.get(e.courseId) : ('Course #' + e.courseId)}"></td>
                             <td th:text="${e.enrolledAt}"></td>
                             <td class="text-end">
-                                <a class="btn btn-primary btn-sm" th:href="@{/student/course/{id}(id=${e.courseId})}">Open</a>
+                                <a class="btn btn-primary btn-sm" th:href="@{/student/course/{courseId}(courseId=${e.courseId})}">Open</a>
                             </td>
                         </tr>
                         </tbody>
@@ -202,10 +203,14 @@
             <section th:if="${activeTab == 'support'}">
                 <h2 class="sarvam-section-title">Contact support</h2>
                 <form action="/student/contact" method="post" class="row g-2 mb-4 sarvam-panel">
-                    <div class="col-md-3"><input class="form-control" name="name" placeholder="Name"></div>
-                    <div class="col-md-3"><input class="form-control" name="email" placeholder="Email"></div>
-                    <div class="col-md-2"><input class="form-control" name="phone" placeholder="Phone"></div>
-                    <div class="col-md-3"><input class="form-control" name="message" placeholder="Message" required>
+                    <div class="col-md-3"><input class="form-control" name="name" aria-label="Your name"
+                                                 placeholder="Name"></div>
+                    <div class="col-md-3"><input class="form-control" name="email" aria-label="Your email"
+                                                 placeholder="Email"></div>
+                    <div class="col-md-2"><input class="form-control" name="phone" aria-label="Your phone"
+                                                 placeholder="Phone"></div>
+                    <div class="col-md-3"><input class="form-control" name="message" aria-label="Message"
+                                                 placeholder="Message" required>
                     </div>
                     <div class="col-md-1">
                         <button class="btn btn-primary w-100" type="submit">Send</button>

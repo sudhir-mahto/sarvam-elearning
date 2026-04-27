@@ -109,13 +109,17 @@
             <section class="sarvam-panel" th:if="${activeTab == 'courses'}">
                 <h2 class="h6 fw-bold mb-3">Add / update course</h2>
                 <form method="post" action="/teacher/course/save" class="row g-2 align-items-end">
-                    <div class="col-md-2"><input class="form-control form-control-sm" name="id"
+                    <div class="col-md-2"><input class="form-control form-control-sm" name="courseId"
+                                                 aria-label="Course ID (optional)"
                                                  placeholder="ID (optional)"></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="title" placeholder="Title"
-                                                 required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="title"
+                                                 aria-label="Course title"
+                                                 placeholder="Title" required></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="price" type="number"
+                                                 aria-label="Course price"
                                                  placeholder="Price" required></div>
                     <div class="col-md-3"><input class="form-control form-control-sm" name="instructor"
+                                                 aria-label="Instructor name"
                                                  placeholder="Instructor" required></div>
                     <div class="col-md-2">
                         <button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
@@ -134,12 +138,12 @@
                         </thead>
                         <tbody>
                         <tr th:each="c : ${courses}">
-                            <td th:text="${c.id}"></td>
+                            <td th:text="${c.courseId}"></td>
                             <td th:text="${c.title}"></td>
                             <td th:text="${c.price}"></td>
                             <td th:text="${c.instructor}"></td>
                             <td>
-                                <form th:action="@{'/teacher/course/delete/' + ${c.id}}" method="post" class="d-inline">
+                                <form th:action="@{'/teacher/course/delete/' + ${c.courseId}}" method="post" class="d-inline">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                 </form>
                             </td>
@@ -152,15 +156,20 @@
             <section class="sarvam-panel" th:if="${activeTab == 'lectures'}">
                 <h2 class="h6 fw-bold mb-3">Add / update lecture</h2>
                 <form method="post" action="/teacher/lecture/save" class="row g-2">
-                    <div class="col-md-2"><input class="form-control form-control-sm" name="id"
+                    <div class="col-md-2"><input class="form-control form-control-sm" name="lectureId"
+                                                 aria-label="Lecture ID (optional)"
                                                  placeholder="ID (optional)"></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="courseId"
+                                                 aria-label="Course ID"
                                                  placeholder="Course ID" required></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="title" placeholder="Title"
-                                                 required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="title"
+                                                 aria-label="Lecture title"
+                                                 placeholder="Title" required></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="videoUrl"
+                                                 aria-label="YouTube video URL"
                                                  placeholder="YouTube URL"></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="meetingUrl"
+                                                 aria-label="Meet or Zoom URL"
                                                  placeholder="Meet/Zoom URL"></div>
                     <div class="col-md-1">
                         <button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
@@ -179,11 +188,11 @@
                         </thead>
                         <tbody>
                         <tr th:each="l : ${lectures}">
-                            <td th:text="${l.id}"></td>
+                            <td th:text="${l.lectureId}"></td>
                             <td th:text="${l.courseId}"></td>
                             <td th:text="${l.title}"></td>
                             <td>
-                                <form th:action="@{'/teacher/lecture/delete/' + ${l.id}}" method="post"
+                                <form th:action="@{'/teacher/lecture/delete/' + ${l.lectureId}}" method="post"
                                       class="d-inline">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                 </form>
@@ -197,13 +206,17 @@
             <section class="sarvam-panel" th:if="${activeTab == 'notes'}">
                 <h2 class="h6 fw-bold mb-3">Add / update note</h2>
                 <form method="post" action="/teacher/note/save" class="row g-2 align-items-end">
-                    <div class="col-md-2"><input class="form-control form-control-sm" name="id"
+                    <div class="col-md-2"><input class="form-control form-control-sm" name="noteId"
+                                                 aria-label="Note ID (optional)"
                                                  placeholder="ID (optional)"></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="courseId"
+                                                 aria-label="Course ID"
                                                  placeholder="Course ID" required></div>
-                    <div class="col-md-4"><input class="form-control form-control-sm" name="title" placeholder="Title"
-                                                 required></div>
+                    <div class="col-md-4"><input class="form-control form-control-sm" name="title"
+                                                 aria-label="Note title"
+                                                 placeholder="Title" required></div>
                     <div class="col-md-3"><input class="form-control form-control-sm" name="fileUrl"
+                                                 aria-label="File URL"
                                                  placeholder="File URL" required></div>
                     <div class="col-md-1">
                         <button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
@@ -221,11 +234,11 @@
                         </thead>
                         <tbody>
                         <tr th:each="n : ${notes}">
-                            <td th:text="${n.id}"></td>
+                            <td th:text="${n.noteId}"></td>
                             <td th:text="${n.courseId}"></td>
                             <td th:text="${n.title}"></td>
                             <td>
-                                <form th:action="@{'/teacher/note/delete/' + ${n.id}}" method="post" class="d-inline">
+                                <form th:action="@{'/teacher/note/delete/' + ${n.noteId}}" method="post" class="d-inline">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                 </form>
                             </td>
@@ -238,21 +251,29 @@
             <section class="sarvam-panel" th:if="${activeTab == 'quizzes'}">
                 <h2 class="h6 fw-bold mb-3">Add / update quiz</h2>
                 <form method="post" action="/teacher/quiz/save" class="row g-2">
-                    <div class="col-md-2"><input class="form-control form-control-sm" name="id"
+                    <div class="col-md-2"><input class="form-control form-control-sm" name="quizId"
+                                                 aria-label="Quiz ID (optional)"
                                                  placeholder="ID (optional)"></div>
                     <div class="col-md-2"><input class="form-control form-control-sm" name="courseId"
+                                                 aria-label="Course ID"
                                                  placeholder="Course ID" required></div>
                     <div class="col-md-8"><input class="form-control form-control-sm" name="question"
+                                                 aria-label="Quiz question"
                                                  placeholder="Question" required></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionA" placeholder="A"
-                                                 required></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionB" placeholder="B"
-                                                 required></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionC" placeholder="C"
-                                                 required></div>
-                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionD" placeholder="D"
-                                                 required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionA"
+                                                 aria-label="Option A"
+                                                 placeholder="A" required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionB"
+                                                 aria-label="Option B"
+                                                 placeholder="B" required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionC"
+                                                 aria-label="Option C"
+                                                 placeholder="C" required></div>
+                    <div class="col-md-3"><input class="form-control form-control-sm" name="optionD"
+                                                 aria-label="Option D"
+                                                 placeholder="D" required></div>
                     <div class="col-md-10"><input class="form-control form-control-sm" name="correctOption"
+                                                  aria-label="Correct option (A/B/C/D)"
                                                   placeholder="Correct (A/B/C/D)" required></div>
                     <div class="col-md-2">
                         <button class="btn btn-primary btn-sm w-100" type="submit">Save</button>
@@ -270,11 +291,11 @@
                         </thead>
                         <tbody>
                         <tr th:each="q : ${quizzes}">
-                            <td th:text="${q.id}"></td>
+                            <td th:text="${q.quizId}"></td>
                             <td th:text="${q.courseId}"></td>
                             <td th:text="${q.question}"></td>
                             <td>
-                                <form th:action="@{'/teacher/quiz/delete/' + ${q.id}}" method="post" class="d-inline">
+                                <form th:action="@{'/teacher/quiz/delete/' + ${q.quizId}}" method="post" class="d-inline">
                                     <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                 </form>
                             </td>
@@ -298,7 +319,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="s : ${students}">
-                            <td th:text="${s.id}"></td>
+                            <td th:text="${s.enrollmentId}"></td>
                             <td th:text="${s.studentId}"></td>
                             <td th:text="${s.courseId}"></td>
                             <td th:text="${s.enrolledAt}"></td>

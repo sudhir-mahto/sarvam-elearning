@@ -8,40 +8,40 @@
     <link rel="stylesheet" href="/css/sarvam-theme.css">
 </head>
 <body class="sarvam-app sarvam-auth-page">
-    <div class="sarvam-auth-card">
-        <div class="text-center mb-4">
-            <img src="/images/sarvam-logo.png" alt="" style="width: 72px; height: auto;">
-        </div>
-        <h3 class="mb-4">Create account</h3>
-
-        <form th:action="@{/signup}" method="post" th:object="${user}">
-            <div class="mb-3">
-                <label>Full name</label>
-                <input type="text" th:field="*{name}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="email" th:field="*{email}" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" th:field="*{password}" class="form-control" required>
-            </div>
-            <div class="mb-4">
-                <label>Role</label>
-                <select th:field="*{role}" class="form-select">
-                    <option value="STUDENT">Student</option>
-                    <option value="TEACHER">Teacher</option>
-                    <option value="ADMIN">Admin</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 py-2">Register</button>
-        </form>
-
-        <p class="text-center mt-4 mb-2 small">
-            <a href="/login">Already have an account? Sign in</a>
-        </p>
-        <p class="text-center mb-0 small"><a href="/" class="text-muted">← Home</a></p>
+<div class="sarvam-auth-card">
+    <div class="text-center mb-4">
+        <img src="/images/sarvam-logo.png" alt="" style="width: 72px; height: auto;">
     </div>
+    <h3 class="mb-4">Create account</h3>
+
+    <form th:action="@{/signup}" method="post" th:object="${user}">
+        <div class="mb-3">
+            <label for="name">Full name</label>
+            <input id="name" type="text" th:field="*{name}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email">Email</label>
+            <input id="email" type="email" th:field="*{email}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password">Password</label>
+            <input id="password" type="password" th:field="*{password}" class="form-control" required>
+        </div>
+        <div class="mb-4">
+            <label for="role">Role</label>
+            <select id="role" th:field="*{role}" class="form-select">
+                <option value="STUDENT">Student</option>
+                <option value="TEACHER">Teacher</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2">Register</button>
+    </form>
+
+    <p class="text-center mt-4 mb-2 small">
+        <a href="/login">Already have an account? Sign in</a>
+    </p>
+    <p class="text-center mb-0 small"><a href="/" class="text-muted">← Home</a></p>
+</div>
 </body>
 </html>

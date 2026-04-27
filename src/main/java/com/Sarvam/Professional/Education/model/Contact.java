@@ -10,7 +10,8 @@ public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "contact_id")
+    private Long contactId;
 
     private String name;
     private String email;
@@ -19,15 +20,18 @@ public class Contact {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @Column(name = "admin_reply")
     private String adminReply;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public String getName() {

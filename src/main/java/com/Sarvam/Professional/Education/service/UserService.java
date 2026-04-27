@@ -2,11 +2,12 @@ package com.Sarvam.Professional.Education.service;
 
 import com.Sarvam.Professional.Education.model.User;
 import com.Sarvam.Professional.Education.repository.UserRepository;
+import com.Sarvam.Professional.Education.util.PasswordPrefixUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -39,24 +40,10 @@ public class UserService {
         }
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found."));
-        String stored = normalizeStoredPasswordForMatching(user.getPassword());
-        if (!passwordEncoder.matches(currentPassword, stored)) {
+        if (!passwordEncoder.matches(currentPassword, PasswordPrefixUtil.normalize(user.getPassword()))) {
             throw new IllegalArgumentException("Current password is incorrect.");
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
-    }
-
-    /** Same rules as {@code SecurityConfig} user loading so verify matches login behavior. */
-    private static String normalizeStoredPasswordForMatching(String storedPassword) {
-        String stored = storedPassword;
-        boolean hasPrefix = Pattern.compile("^\\{.+}.*").matcher(stored).matches();
-        if (!hasPrefix && !stored.startsWith("$2a$") && !stored.startsWith("$2b$")
-                && !stored.startsWith("$2y$")) {
-            stored = "{noop}" + stored;
-        } else if (!hasPrefix) {
-            stored = "{bcrypt}" + stored;
-        }
-        return stored;
     }
 }

@@ -109,7 +109,7 @@ public class StudentController {
         int correct = 0;
 
         for (Quiz q : questions) {
-            String selected = request.answers.get(q.getId());
+            String selected = request.answers.get(q.getQuizId());
             if (q.getCorrectOption().equalsIgnoreCase(selected)) {
                 correct++;
             }

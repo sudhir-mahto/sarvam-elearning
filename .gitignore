@@ -23,6 +23,9 @@ logs/
 *.iml
 *.ipr
 
+### jenv (local JDK pin — developer-specific) ###
+.java-version
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
