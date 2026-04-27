@@ -29,7 +29,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public String registerUser(@ModelAttribute User user) {
-        userService.saveUser(user);
+        User savedUser = userService.saveUser(user);
+        System.out.println("Registered new user: " + savedUser.toString());
         return "redirect:/login?registered";
     }
 

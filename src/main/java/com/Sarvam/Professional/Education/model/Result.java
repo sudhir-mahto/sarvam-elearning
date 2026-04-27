@@ -10,21 +10,32 @@ public class Result {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "result_id")
+    private Long resultId;
 
+    @Column(name = "student_id")
     private Long studentId;
+
+    @Column(name = "course_id")
     private Long courseId;
+
+    @Column(name = "total_questions")
     private int totalQuestions;
+
+    @Column(name = "correct_answers")
     private int correctAnswers;
+
     private double percentage;
+
+    @Column(name = "submitted_at")
     private LocalDateTime submittedAt;
 
-    public Long getId() {
-        return id;
+    public Long getResultId() {
+        return resultId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setResultId(Long resultId) {
+        this.resultId = resultId;
     }
 
     public Long getStudentId() {

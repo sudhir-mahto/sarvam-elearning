@@ -11,24 +11,33 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "payment_id")
+    private Long paymentId;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "invoice_no", nullable = false, unique = true)
     private String invoiceNo = "INV-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
+    @Column(name = "student_id")
     private Long studentId;
+
+    @Column(name = "course_id")
     private Long courseId;
+
+    @Column(name = "upi_ref")
     private String upiRef;
+
     private double amount;
     private String status;
+
+    @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
-    public Long getId() {
-        return id;
+    public Long getPaymentId() {
+        return paymentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getInvoiceNo() {

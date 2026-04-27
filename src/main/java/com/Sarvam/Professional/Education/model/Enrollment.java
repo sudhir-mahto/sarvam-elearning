@@ -10,20 +10,24 @@ public class Enrollment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "enrollment_id")
+    private Long enrollmentId;
 
+    @Column(name = "student_id")
     private Long studentId;
+
+    @Column(name = "course_id")
     private Long courseId;
 
+    @Column(name = "enrolled_at")
     private LocalDateTime enrolledAt;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public Long getEnrollmentId() {
+        return enrollmentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEnrollmentId(Long enrollmentId) {
+        this.enrollmentId = enrollmentId;
     }
 
     public Long getStudentId() {

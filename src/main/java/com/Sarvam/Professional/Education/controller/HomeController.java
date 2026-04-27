@@ -88,7 +88,7 @@ public class HomeController {
     public String studentCourse(@PathVariable Long courseId, Authentication authentication, Model model) {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-        if (!enrollmentRepository.existsByStudentIdAndCourseId(user.getId(), courseId)) {
+        if (!enrollmentRepository.existsByStudentIdAndCourseId(user.getUserId(), courseId)) {
             return "redirect:/student/dashboard?tab=courses";
         }
         Course course = courseRepository.findById(courseId)
@@ -160,10 +160,10 @@ public class HomeController {
         if (user != null) {
             displayName = user.getName();
             roleBadge = user.getRole().name();
-            studentId = user.getId();
-            myEnrollments = enrollmentRepository.findByStudentId(user.getId());
+            studentId = user.getUserId();
+            myEnrollments = enrollmentRepository.findByStudentId(user.getUserId());
             enrolledCount = myEnrollments.size();
-            myPayments = paymentRepository.findByStudentId(user.getId());
+            myPayments = paymentRepository.findByStudentId(user.getUserId());
             myContacts = contactRepository.findAll().stream()
                     .filter(c -> c.getEmail() != null && c.getEmail().equalsIgnoreCase(user.getEmail()))
                     .toList();
@@ -172,7 +172,7 @@ public class HomeController {
         int hoursLearned = enrolledCount == 0 ? 24 : enrolledCount * 12;
         Map<Long, String> courseTitles = new HashMap<>();
         for (Course c : courses) {
-            courseTitles.put(c.getId(), c.getTitle());
+            courseTitles.put(c.getCourseId(), c.getTitle());
         }
         model.addAttribute("courseTitles", courseTitles);
         model.addAttribute("displayName", displayName);
@@ -196,14 +196,14 @@ public class HomeController {
                             @RequestParam String upiRef) {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-        if (enrollmentRepository.existsByStudentIdAndCourseId(user.getId(), courseId)) {
+        if (enrollmentRepository.existsByStudentIdAndCourseId(user.getUserId(), courseId)) {
             return "redirect:/student/dashboard";
         }
 
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
         Payment payment = new Payment();
-        payment.setStudentId(user.getId());
+        payment.setStudentId(user.getUserId());
         payment.setCourseId(courseId);
         payment.setAmount(course.getPrice());
         payment.setUpiRef(upiRef);
@@ -212,7 +212,7 @@ public class HomeController {
         paymentRepository.save(payment);
 
         Enrollment enrollment = new Enrollment();
-        enrollment.setStudentId(user.getId());
+        enrollment.setStudentId(user.getUserId());
         enrollment.setCourseId(courseId);
         enrollment.setEnrolledAt(LocalDateTime.now());
         enrollmentRepository.save(enrollment);
@@ -256,12 +256,14 @@ public class HomeController {
     }
 
     @PostMapping("/teacher/course/save")
-    public String saveCourse(@RequestParam(required = false) Long id,
+    public String saveCourse(@RequestParam(required = false) Long courseId,
                              @RequestParam String title,
                              @RequestParam int price,
                              @RequestParam String instructor,
                              @RequestParam(required = false) String thumbnail) {
-        Course course = id == null ? new Course() : courseRepository.findById(id).orElse(new Course());
+        Course course = courseId == null
+                ? new Course()
+                : courseRepository.findById(courseId).orElse(new Course());
         course.setTitle(title);
         course.setPrice(price);
         course.setInstructor(instructor);
@@ -270,19 +272,21 @@ public class HomeController {
         return "redirect:/teacher/dashboard";
     }
 
-    @PostMapping("/teacher/course/delete/{id}")
-    public String deleteCourse(@PathVariable Long id) {
-        courseRepository.deleteById(id);
+    @PostMapping("/teacher/course/delete/{courseId}")
+    public String deleteCourse(@PathVariable Long courseId) {
+        courseRepository.deleteById(courseId);
         return "redirect:/teacher/dashboard";
     }
 
     @PostMapping("/teacher/lecture/save")
-    public String saveLecture(@RequestParam(required = false) Long id,
+    public String saveLecture(@RequestParam(required = false) Long lectureId,
                               @RequestParam Long courseId,
                               @RequestParam String title,
                               @RequestParam(required = false) String videoUrl,
                               @RequestParam(required = false) String meetingUrl) {
-        Lecture lecture = id == null ? new Lecture() : lectureRepository.findById(id).orElse(new Lecture());
+        Lecture lecture = lectureId == null
+                ? new Lecture()
+                : lectureRepository.findById(lectureId).orElse(new Lecture());
         lecture.setCourseId(courseId);
         lecture.setTitle(title);
         lecture.setVideoUrl(videoUrl);
@@ -291,18 +295,18 @@ public class HomeController {
         return "redirect:/teacher/dashboard";
     }
 
-    @PostMapping("/teacher/lecture/delete/{id}")
-    public String deleteLecture(@PathVariable Long id) {
-        lectureRepository.deleteById(id);
+    @PostMapping("/teacher/lecture/delete/{lectureId}")
+    public String deleteLecture(@PathVariable Long lectureId) {
+        lectureRepository.deleteById(lectureId);
         return "redirect:/teacher/dashboard";
     }
 
     @PostMapping("/teacher/note/save")
-    public String saveNote(@RequestParam(required = false) Long id,
+    public String saveNote(@RequestParam(required = false) Long noteId,
                            @RequestParam Long courseId,
                            @RequestParam String title,
                            @RequestParam String fileUrl) {
-        Note note = id == null ? new Note() : noteRepository.findById(id).orElse(new Note());
+        Note note = noteId == null ? new Note() : noteRepository.findById(noteId).orElse(new Note());
         note.setCourseId(courseId);
         note.setTitle(title);
         note.setFileUrl(fileUrl);
@@ -310,14 +314,14 @@ public class HomeController {
         return "redirect:/teacher/dashboard";
     }
 
-    @PostMapping("/teacher/note/delete/{id}")
-    public String deleteNote(@PathVariable Long id) {
-        noteRepository.deleteById(id);
+    @PostMapping("/teacher/note/delete/{noteId}")
+    public String deleteNote(@PathVariable Long noteId) {
+        noteRepository.deleteById(noteId);
         return "redirect:/teacher/dashboard";
     }
 
     @PostMapping("/teacher/quiz/save")
-    public String saveQuiz(@RequestParam(required = false) Long id,
+    public String saveQuiz(@RequestParam(required = false) Long quizId,
                            @RequestParam Long courseId,
                            @RequestParam String question,
                            @RequestParam String optionA,
@@ -325,7 +329,7 @@ public class HomeController {
                            @RequestParam String optionC,
                            @RequestParam String optionD,
                            @RequestParam String correctOption) {
-        Quiz quiz = id == null ? new Quiz() : quizRepository.findById(id).orElse(new Quiz());
+        Quiz quiz = quizId == null ? new Quiz() : quizRepository.findById(quizId).orElse(new Quiz());
         quiz.setCourseId(courseId);
         quiz.setQuestion(question);
         quiz.setOptionA(optionA);
@@ -337,9 +341,9 @@ public class HomeController {
         return "redirect:/teacher/dashboard";
     }
 
-    @PostMapping("/teacher/quiz/delete/{id}")
-    public String deleteQuiz(@PathVariable Long id) {
-        quizRepository.deleteById(id);
+    @PostMapping("/teacher/quiz/delete/{quizId}")
+    public String deleteQuiz(@PathVariable Long quizId) {
+        quizRepository.deleteById(quizId);
         return "redirect:/teacher/dashboard";
     }
 
@@ -372,18 +376,18 @@ public class HomeController {
     }
 
     @PostMapping("/admin/user/save")
-    public String saveUser(@RequestParam(required = false) Long id,
+    public String saveUser(@RequestParam(required = false) Long userId,
                            @RequestParam String name,
                            @RequestParam String email,
                            @RequestParam Role role,
                            @RequestParam(defaultValue = "true") boolean active,
                            @RequestParam(required = false) String password) {
-        User user = id == null ? new User() : userRepository.findById(id).orElse(new User());
+        User user = userId == null ? new User() : userRepository.findById(userId).orElse(new User());
         user.setName(name);
         user.setEmail(email);
         user.setRole(role);
         user.setActive(active);
-        if (id == null) {
+        if (userId == null) {
             String rawPassword = (password == null || password.isBlank()) ? "123456" : password;
             user.setPassword(passwordEncoder.encode(rawPassword));
         } else if (password != null && !password.isBlank()) {
@@ -393,29 +397,29 @@ public class HomeController {
         return "redirect:/admin/dashboard";
     }
 
-    @PostMapping("/admin/user/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+    @PostMapping("/admin/user/delete/{userId}")
+    public String deleteUser(@PathVariable Long userId) {
+        userRepository.deleteById(userId);
         return "redirect:/admin/dashboard";
     }
 
-    @PostMapping("/admin/course/delete/{id}")
-    public String adminDeleteCourse(@PathVariable Long id) {
-        courseRepository.deleteById(id);
+    @PostMapping("/admin/course/delete/{courseId}")
+    public String adminDeleteCourse(@PathVariable Long courseId) {
+        courseRepository.deleteById(courseId);
         return "redirect:/admin/dashboard";
     }
 
-    @PostMapping("/admin/payment/verify/{id}")
-    public String verifyPayment(@PathVariable Long id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
+    @PostMapping("/admin/payment/verify/{paymentId}")
+    public String verifyPayment(@PathVariable Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found"));
         payment.setStatus("VERIFIED");
         paymentRepository.save(payment);
         return "redirect:/admin/dashboard";
     }
 
-    @PostMapping("/admin/contact/reply/{id}")
-    public String replyContact(@PathVariable Long id, @RequestParam String adminReply) {
-        Contact contact = contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
+    @PostMapping("/admin/contact/reply/{contactId}")
+    public String replyContact(@PathVariable Long contactId, @RequestParam String adminReply) {
+        Contact contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact not found"));
         contact.setAdminReply(adminReply);
         contactRepository.save(contact);
         return "redirect:/admin/dashboard";

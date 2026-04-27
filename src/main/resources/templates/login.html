@@ -25,12 +25,13 @@
 
         <form th:action="@{/login}" method="post">
             <div class="mb-3">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" required autocomplete="username">
+                <label for="login-email">Email</label>
+                <input id="login-email" type="email" name="email" class="form-control" required autocomplete="username">
             </div>
             <div class="mb-4">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" required autocomplete="current-password">
+                <label for="login-password">Password</label>
+                <input id="login-password" type="password" name="password" class="form-control" required
+                       autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-primary w-100 py-2">Sign in</button>
         </form>

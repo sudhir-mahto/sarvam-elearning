@@ -8,7 +8,8 @@ public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "quiz_id")
+    private Long quizId;
 
     @Column(name = "course_id")
     private Long courseId;
@@ -30,12 +31,12 @@ public class Quiz {
     @Column(name = "correct_option")
     private String correctOption;
 
-    public Long getId() {
-        return id;
+    public Long getQuizId() {
+        return quizId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setQuizId(Long quizId) {
+        this.quizId = quizId;
     }
 
     public Long getCourseId() {

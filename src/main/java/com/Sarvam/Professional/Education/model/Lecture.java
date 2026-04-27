@@ -8,19 +8,26 @@ public class Lecture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "lecture_id")
+    private Long lectureId;
 
+    @Column(name = "course_id")
     private Long courseId;
+
     private String title;
+
+    @Column(name = "video_url")
     private String videoUrl;
+
+    @Column(name = "meeting_url")
     private String meetingUrl;
 
-    public Long getId() {
-        return id;
+    public Long getLectureId() {
+        return lectureId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLectureId(Long lectureId) {
+        this.lectureId = lectureId;
     }
 
     public Long getCourseId() {

@@ -37,7 +37,7 @@ html {
 body.sarvam-app {
     margin: 0;
     min-height: 100vh;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     font-size: 0.9375rem;
     line-height: 1.5;
     color: var(--color-text);
@@ -419,7 +419,7 @@ body.sarvam-app {
     justify-content: center;
     gap: 0.5rem;
     padding: 0.65rem 1.35rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     font-weight: 600;
     font-size: 0.9375rem;
     border-radius: var(--radius);
@@ -443,7 +443,7 @@ body.sarvam-app {
     justify-content: center;
     gap: 0.5rem;
     padding: 0.65rem 1.35rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     font-weight: 600;
     font-size: 0.9375rem;
     border-radius: var(--radius);
@@ -467,7 +467,7 @@ body.sarvam-app {
     justify-content: center;
     gap: 0.4rem;
     padding: 0.5rem 1rem;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     font-weight: 600;
     font-size: 0.875rem;
     border-radius: var(--radius);

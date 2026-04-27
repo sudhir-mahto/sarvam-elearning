@@ -2,28 +2,26 @@ package com.Sarvam.Professional.Education.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "courses")
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "course_id")
+    private Long courseId;
 
     private String title;
     private int price;
     private String instructor;
     private String thumbnail;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getTitle() {

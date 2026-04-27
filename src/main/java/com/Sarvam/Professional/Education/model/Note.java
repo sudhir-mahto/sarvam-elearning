@@ -8,18 +8,23 @@ public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "note_id")
+    private Long noteId;
 
+    @Column(name = "course_id")
     private Long courseId;
+
     private String title;
+
+    @Column(name = "file_url")
     private String fileUrl;
 
-    public Long getId() {
-        return id;
+    public Long getNoteId() {
+        return noteId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNoteId(Long noteId) {
+        this.noteId = noteId;
     }
 
     public Long getCourseId() {

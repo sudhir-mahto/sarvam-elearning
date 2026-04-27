@@ -46,9 +46,9 @@ public class AdminController {
         return userRepository.findAll();
     }
 
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User payload) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    @PutMapping("/users/{userId}")
+    public User updateUser(@PathVariable Long userId, @RequestBody User payload) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         user.setName(payload.getName());
         user.setRole(payload.getRole());
         user.setActive(payload.isActive());
@@ -65,9 +65,9 @@ public class AdminController {
         return paymentRepository.findAll();
     }
 
-    @PutMapping("/payments/{id}/verify")
-    public Payment verifyPayment(@PathVariable Long id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
+    @PutMapping("/payments/{paymentId}/verify")
+    public Payment verifyPayment(@PathVariable Long paymentId) {
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new RuntimeException("Payment not found"));
         payment.setStatus("VERIFIED");
         return paymentRepository.save(payment);
     }
@@ -87,9 +87,9 @@ public class AdminController {
         return contactRepository.findAll();
     }
 
-    @PutMapping("/contacts/{id}/reply")
-    public Contact reply(@PathVariable Long id, @RequestBody ContactReplyRequest request) {
-        Contact contact = contactRepository.findById(id).orElseThrow(() -> new RuntimeException("Message not found"));
+    @PutMapping("/contacts/{contactId}/reply")
+    public Contact reply(@PathVariable Long contactId, @RequestBody ContactReplyRequest request) {
+        Contact contact = contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Message not found"));
         contact.setAdminReply(request.adminReply);
         return contactRepository.save(contact);
     }
