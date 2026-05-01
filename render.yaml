@@ -1,0 +1,38 @@
+databases:
+  - name: sarvam-db
+    plan: free
+    databaseName: sarvam_db
+    user: sarvam
+
+services:
+  - type: web
+    name: sarvam-elearning
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /
+    envVars:
+      # Spring needs jdbc:postgresql://... — Render's connectionString is
+      # postgresql://... so we assemble the JDBC URL from the individual props.
+      - key: DB_HOST
+        fromDatabase:
+          name: sarvam-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sarvam-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sarvam-db
+          property: database
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: sarvam-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: sarvam-db
+          property: password
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=require

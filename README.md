@@ -1,6 +1,6 @@
 # Sarvam Professional Education — E-Learning Platform
 
-A full-stack e-learning web application built with **Spring Boot 3**, **Thymeleaf**, **Spring Security**, **JPA/Hibernate**, and **MySQL**. The platform supports three user roles — **Student**, **Teacher**, and **Admin** — each with a dedicated dashboard, role-based access control, and both server-rendered UI routes and JSON REST APIs.
+A full-stack e-learning web application built with **Spring Boot 3**, **Thymeleaf**, **Spring Security**, **JPA/Hibernate**, and **PostgreSQL**. The platform supports three user roles — **Student**, **Teacher**, and **Admin** — each with a dedicated dashboard, role-based access control, and both server-rendered UI routes and JSON REST APIs.
 
 > `com.sarvam:sarvam-elearning:1.0`
 
@@ -23,6 +23,7 @@ A full-stack e-learning web application built with **Spring Boot 3**, **Thymelea
 13. [Build & Packaging](#build--packaging)
 14. [Logging](#logging)
 15. [Troubleshooting](#troubleshooting)
+16. [Deploying to Render](#deploying-to-render-free)
 
 ---
 
@@ -59,11 +60,11 @@ A full-stack e-learning web application built with **Spring Boot 3**, **Thymelea
 | Layer            | Technology                                 |
 |------------------|--------------------------------------------|
 | Language         | Java 17+                                   |
-| Framework        | Spring Boot 3.2.5                          |
+| Framework        | Spring Boot 3.3.5                          |
 | Web              | Spring MVC + Thymeleaf templates           |
 | Security         | Spring Security (form login, role-based)   |
 | Persistence      | Spring Data JPA + Hibernate                |
-| Database         | MySQL 8 (`mysql-connector-j`)              |
+| Database         | PostgreSQL (`org.postgresql:postgresql`)   |
 | Build            | Maven (Maven Wrapper included)             |
 | Validation       | Jakarta Bean Validation (`spring-boot-starter-validation`) |
 | Dev Productivity | Spring Boot DevTools                       |
@@ -129,7 +130,7 @@ sarvam-elearning/
 ## Prerequisites
 
 - **Java 17** (pinned via `<java.version>17</java.version>` in `pom.xml`)
-- **MySQL 8** running locally on `localhost:3306`
+- **PostgreSQL 14+** running locally on `localhost:5432`
 - **Maven** — *not required* if you use the bundled wrapper (`./mvnw`)
 
 ---
@@ -143,20 +144,28 @@ git clone <your-repo-url> sarvam-elearning
 cd sarvam-elearning
 ```
 
-### 2. Create the MySQL database
+### 2. Create the PostgreSQL database
 
-The application is configured to connect to a database named `sarvam_db` with user `root` / password `root1234`. Either match those defaults or update `application.properties` (see [Configuration](#configuration)).
+The application defaults to a database named `sarvam_db` with user `postgres` / password `postgres`. Either match those defaults or override them via environment variables (see [Configuration](#configuration)).
 
-```sql
-CREATE DATABASE sarvam_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```bash
+createdb sarvam_db
+# or, from psql:
+#   CREATE DATABASE sarvam_db;
 ```
 
 > Tables are auto-created by Hibernate on first run (`spring.jpa.hibernate.ddl-auto=update`).
-> Seed data in `src/main/resources/data.sql` is loaded automatically on every startup using `INSERT IGNORE`, so it is safe to re-run.
+> Seed data in `src/main/resources/data.sql` is loaded automatically on every startup using `ON CONFLICT DO NOTHING`, so it is safe to re-run.
 
-### 3. (Optional) Adjust `application.properties`
+### 3. (Optional) Override DB credentials
 
-Edit `src/main/resources/application.properties` if your local MySQL credentials differ from the defaults.
+The DB URL, username, and password are read from `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` env vars (with localhost defaults). Set these to point at any Postgres instance:
+
+```bash
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/sarvam_db
+export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_DATASOURCE_PASSWORD=postgres
+```
 
 ---
 
@@ -209,10 +218,10 @@ Key properties in `src/main/resources/application.properties`:
 
 | Property                                   | Default                                      | Notes                                |
 |--------------------------------------------|----------------------------------------------|--------------------------------------|
-| `server.port`                              | `8080`                                       | HTTP port                            |
-| `spring.datasource.url`                    | `jdbc:mysql://localhost:3306/sarvam_db?...`  | JDBC URL                             |
-| `spring.datasource.username`               | `root`                                       | DB user                              |
-| `spring.datasource.password`               | `root1234`                                   | DB password                          |
+| `server.port`                              | `${PORT:8080}`                               | HTTP port (Render injects `PORT`)    |
+| `spring.datasource.url`                    | `jdbc:postgresql://localhost:5432/sarvam_db` | JDBC URL (env: `SPRING_DATASOURCE_URL`) |
+| `spring.datasource.username`               | `postgres`                                   | DB user (env: `SPRING_DATASOURCE_USERNAME`) |
+| `spring.datasource.password`               | `postgres`                                   | DB password (env: `SPRING_DATASOURCE_PASSWORD`) |
 | `spring.jpa.hibernate.ddl-auto`            | `update`                                     | Auto-create / migrate schema         |
 | `spring.sql.init.mode`                     | `always`                                     | Always run `data.sql` on startup     |
 | `spring.jpa.defer-datasource-initialization` | `true`                                     | Run `data.sql` *after* JPA DDL       |
@@ -403,20 +412,36 @@ Run tests:
 
 ## Troubleshooting
 
-**`Communications link failure` / DB connection errors**
-Ensure MySQL is running on `localhost:3306` and that `sarvam_db` exists. Verify the credentials in `application.properties`.
+**`Connection refused` / DB connection errors**
+Ensure PostgreSQL is running on `localhost:5432` and that `sarvam_db` exists. Verify the credentials match the `SPRING_DATASOURCE_*` env vars (or the defaults in `application.properties`).
 
-**`Table 'sarvam_db.users' doesn't exist`**
+**`relation "users" does not exist`**
 Start the app once with `spring.jpa.hibernate.ddl-auto=update` (the default) so Hibernate can create the schema before `data.sql` runs.
 
 **Login keeps failing for demo users**
-Re-run the app — `data.sql` uses `INSERT IGNORE`, so existing rows are preserved. If you previously changed a demo password, reset that user row directly in MySQL or sign up a new account.
+Re-run the app — `data.sql` uses `ON CONFLICT DO NOTHING`, so existing rows are preserved. If you previously changed a demo password, reset that user row directly in Postgres (`psql sarvam_db`) or sign up a new account.
 
 **Templates not refreshing**
 `spring.thymeleaf.cache` is `false` so edits to `.html` files reload on the next request. If they don't, ensure you're editing the file under `src/main/resources/templates/` and not a copy under `target/`.
 
 **Port `8080` already in use**
 Change `server.port` in `application.properties`, or stop the conflicting process.
+
+---
+
+## Deploying to Render (free)
+
+The repo ships a `Dockerfile` and `render.yaml` Blueprint that provision a free web service plus a free PostgreSQL database. The app reads its DB connection from `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` env vars, and binds to `$PORT`.
+
+1. Push this repo to GitHub.
+2. Go to https://dashboard.render.com → **New** → **Blueprint** → connect the GitHub repo.
+3. Render reads `render.yaml`, creates the Postgres DB, then builds and deploys the web service. Wait for the first deploy to finish (~5 min).
+4. Visit the assigned `https://sarvam-elearning-*.onrender.com` URL.
+
+Notes:
+- The free web service spins down after ~15 min of inactivity; the first hit after idle takes ~30s.
+- The free Postgres plan expires 90 days after creation — Render will email a reminder.
+- Demo accounts seeded by `data.sql` (password `password123`): `admin@demo.sarvam`, `teacher@demo.sarvam`, `student@demo.sarvam`.
 
 ---
 
